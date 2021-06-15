@@ -1,5 +1,6 @@
 import {h} from './h'
 import {Fragment} from "./VNode";
+import {render} from "./render";
 
 const fragmentVNode = h(Fragment, null, [
     h('td'), h('td')
@@ -7,3 +8,24 @@ const fragmentVNode = h(Fragment, null, [
 
 console.log(fragmentVNode)
 console.log(h('你好吗', null, []))
+const elementVNode = h(
+    'div',
+    {
+        style: {
+            height: '100px',
+            width: '100px',
+            background: 'red'
+        }
+    },
+    h('div', {
+        style: {
+            height: '50px',
+            width: '50px',
+            background: 'green'
+        }
+    })
+)
+
+console.log(elementVNode)
+
+render(elementVNode, document.getElementById('app'))
