@@ -165,7 +165,7 @@ function mount(vnode: VNode<any>, container: Element, isSVG: boolean = false): v
         mountElement(vnode, container, isSVG)
     } else if (flags & VNodeFlags.COMPONENT) {
         // 挂载组件
-        mountComponent(vnode, container)
+        mountComponent(vnode, container, isSVG)
     } else if (flags & VNodeFlags.TEXT) {
         // 挂载纯文本
         mountText(vnode, container)
