@@ -1,22 +1,8 @@
 import {ChildrenFlags, Fragment, Portal, VNode, VNodeFlags} from "./VNode";
-import {normalizeVNodes} from "./utils";
+import {normalizeVNodes, createTextVNode} from "./utils";
 
-function createTextVNode(text: String): VNode {
-    return {
-        _isVNode: true,
-        // flags 是 VNodeFlags.TEXT
-        flags: VNodeFlags.TEXT,
-        tag: null,
-        data: null,
-        // 纯文本类型的 VNode，其 children 属性存储的是与之相符的文本内容
-        children: text,
-        // 文本节点没有子节点
-        childFlags: ChildrenFlags.NO_CHILDREN,
-        el: null
-    }
-}
 
-export function h(tag: any, data: any = null, children: any = null): VNode {
+export function h(tag: any, data: any = null, children: any = null): VNode<any> {
     let flags = null
     if (typeof tag === 'string') {
         flags = tag === 'svg' ? VNodeFlags.ELEMENT_SVG : VNodeFlags.ELEMENT_HTML

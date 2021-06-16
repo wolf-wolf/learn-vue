@@ -46,7 +46,7 @@ export interface VNode<K> {
     flags: number | null,
     tag: String | Object | null | keyof HTMLElementTagNameMap,
     data: VNodeData<K> | null,
-    children: String | VNode<K> | Array<VNode<K>> | null,
+    children: any,
     childFlags: number,
-    el: Element | null
+    el: any
 }

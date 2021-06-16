@@ -1,5 +1,5 @@
 import {h} from './h'
-import {Fragment} from "./VNode";
+import {Fragment, Portal} from "./VNode";
 import {render} from "./render";
 
 const fragmentVNode = h(Fragment, null, [
@@ -8,6 +8,11 @@ const fragmentVNode = h(Fragment, null, [
 
 console.log(fragmentVNode)
 console.log(h('你好吗', null, []))
+
+function handler() {
+    alert('click me')
+}
+
 const elementVNode = h(
     'div',
     {
@@ -37,8 +42,36 @@ const elementVNode = h(
             type: 'checkbox',
             class: 'test-1',
             checked: true,
-            custom: 1
-        })
+            custom: 1,
+        }),
+        h('div', {
+            style: {
+                height: '50px',
+                width: '50px',
+                background: 'green'
+            },
+            onclick: handler
+        }),
+        h(
+            'div',
+            {
+                style: {
+                    height: '100px',
+                    width: '100px',
+                    background: 'red'
+                }
+            },
+            '我是文本'
+        ),
+        h(Fragment, null, [
+            h('span', null, '我是标题1......'),
+            h('span', null, '我是标题2......')
+        ]),
+
+        h(Portal, { target: '#app11' }, [
+            h('span', null, '我是 Portal 标题1......'),
+            h('span', null, '我是 Portal 标题2......')
+        ])
     ]
 )
 
