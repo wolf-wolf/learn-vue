@@ -1,4 +1,5 @@
 import {ChildrenFlags, Fragment, Portal, VNode, VNodeFlags} from "./VNode";
+import {normalizeVNodes} from "./utils";
 
 function createTextVNode(text: String): VNode {
     return {
@@ -13,21 +14,6 @@ function createTextVNode(text: String): VNode {
         childFlags: ChildrenFlags.NO_CHILDREN,
         el: null
     }
-}
-
-function normalizeVNodes(children: any) {
-    const newChildren = []
-    // 遍历 children
-    for (let i = 0; i < children.length; i++) {
-        const child = children[i]
-        if (child.key == null) {
-            // 如果原来的 VNode 没有key，则使用竖线(|)与该VNode在数组中的索引拼接而成的字符串作为key
-            child.key = '|' + i
-        }
-        newChildren.push(child)
-    }
-    // 返回新的children，此时 children 的类型就是 ChildrenFlags.KEYED_VNODES
-    return newChildren
 }
 
 export function h(tag: any, data: any = null, children: any = null): VNode {

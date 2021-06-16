@@ -1,9 +1,17 @@
 import {ChildrenFlags, VNode, VNodeFlags} from "./VNode";
+import {normalizeClass} from "./utils";
 
-function mountElement(vnode: VNode, container: HTMLElement): void {
-    const el = document.createElement(vnode.tag as keyof HTMLElementTagNameMap)
+const domPropsRE = /\[A-Z]|^(?:value|checked|selected|muted)$/
+
+function mountElement(vnode: VNode<any>, container: Element, isSVG: boolean): void {
+    isSVG = isSVG || !!((vnode.flags as number) & VNodeFlags.ELEMENT_SVG);
+    const el = isSVG
+        ? document.createElementNS('http://www.w3.org/2000/svg', vnode.tag as keyof HTMLElementTagNameMap)
+        : document.createElement(vnode.tag as keyof HTMLElementTagNameMap)
+
     // 拿到 VNodeData
     const data = vnode.data
+
     if (data) {
         // 如果 VNodeData 存在，则遍历之
         for (let key in data) {
@@ -13,6 +21,27 @@ function mountElement(vnode: VNode, container: HTMLElement): void {
                     // 如果 key 的值是 style，说明是内联样式，逐个将样式规则应用到 el
                     for (let k in data.style) {
                         el.style[k] = data.style[k]
+                    }
+                    break;
+                case 'class':
+                    if (isSVG) {
+                        el.setAttribute('class', data[key] as string)
+                    } else {
+                        // @ts-ignore
+                        el.className = normalizeClass(data[key])
+                    }
+
+                    break
+                default:
+                    let handle = (data as any)[key] as any;
+                    if (key[0] === 'o' && key[1] === 'n') {
+                        // 事件
+                        el.addEventListener(key.slice(2), handle)
+                    } else if (domPropsRE.test(key)) {
+                        (el as any)[key] = handle           // 当作 DOM Prop 处理
+                    } else {
+                        // 当作 Attr 处理
+                        el.setAttribute(key, handle)
                     }
                     break
             }
@@ -30,11 +59,11 @@ function mountElement(vnode: VNode, container: HTMLElement): void {
     if (childFlags !== ChildrenFlags.NO_CHILDREN) {
         if (childFlags & ChildrenFlags.SINGLE_VNODE) {
             // 如果是单个子节点则调用 mount 函数挂载
-            mount((children as VNode), el)
+            mount((children as VNode<any>), el, isSVG)
         } else if (childFlags & ChildrenFlags.MULTIPLE_VNODES) {
             // 如果是单多个子节点则遍历并调用 mount 函数挂载
             for (let i = 0; i < children.length; i++) {
-                mount(children[i], el)
+                mount(children[i], el, isSVG)
             }
         }
     }
@@ -42,27 +71,27 @@ function mountElement(vnode: VNode, container: HTMLElement): void {
     container.appendChild(el);
 }
 
-function mountComponent(vnode: VNode, container: HTMLElement) {
+function mountComponent(vnode: VNode<any>, container: Element) {
 }
 
-function mountText(vnode: VNode, container: HTMLElement) {
+function mountText(vnode: VNode<any>, container: Element) {
 }
 
-function mountFragment(vnode: VNode, container: HTMLElement) {
+function mountFragment(vnode: VNode<any>, container: Element) {
 }
 
-function mountPortal(vnode: VNode, container: HTMLElement) {
+function mountPortal(vnode: VNode<any>, container: Element) {
 }
 
-function mount(vnode: VNode, container: HTMLElement): void {
+function mount(vnode: VNode<any>, container: Element, isSVG: boolean = false): void {
     const flags = vnode.flags as number;
 
     if (flags & VNodeFlags.ELEMENT) {
         // 挂载普通标签
-        mountElement(vnode, container)
+        mountElement(vnode, container, isSVG)
     } else if (flags & VNodeFlags.COMPONENT) {
         // 挂载组件
-        mountComponent(vnode, container)
+        mountComponent(vnode, container, isSVG)
     } else if (flags & VNodeFlags.TEXT) {
         // 挂载纯文本
         mountText(vnode, container)
@@ -75,11 +104,11 @@ function mount(vnode: VNode, container: HTMLElement): void {
     }
 }
 
-function patch(prevVNode: VNode, vnode: VNode, container: any) {
+function patch(prevVNode: VNode<any>, vnode: VNode<any>, container: any) {
 
 }
 
-export function render(vnode: VNode, container: any) {
+export function render(vnode: VNode<any>, container: any) {
     const prevVNode = container.vnode
     if (prevVNode == null) {
         if (vnode) {

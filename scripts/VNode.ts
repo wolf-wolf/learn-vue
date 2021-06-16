@@ -35,16 +35,18 @@ export const ChildrenFlags = {
 // children 是多个
 ChildrenFlags.MULTIPLE_VNODES = ChildrenFlags.KEYED_VNODES | ChildrenFlags.NONE_KEYED_VNODES;
 
-interface VNodeData {
-    style: CSSStyleDeclaration
+interface VNodeData<K> {
+    style: CSSStyleDeclaration,
+    class: string | Array<any>
+    K: any
 }
 
-export interface VNode {
+export interface VNode<K> {
     _isVNode: true,
     flags: number | null,
     tag: String | Object | null | keyof HTMLElementTagNameMap,
-    data: VNodeData | null,
-    children: String | VNode | Array<VNode> | null,
+    data: VNodeData<K> | null,
+    children: String | VNode<K> | Array<VNode<K>> | null,
     childFlags: number,
-    el: HTMLElement | null
+    el: Element | null
 }

@@ -17,15 +17,29 @@ const elementVNode = h(
             background: 'red'
         }
     },
-    h('div', {
-        style: {
-            height: '50px',
-            width: '50px',
-            background: 'green'
-        }
-    })
+    [
+        h('div', {
+            style: {
+                height: '50px',
+                width: '50px',
+                background: 'green'
+            },
+            class: [
+                'class-a',
+                ['class-e', 'class-f'],
+                {
+                    'class-b': true,
+                    'class-c': true
+                }
+            ]
+        }),
+        h('input', {
+            type: 'checkbox',
+            class: 'test-1',
+            checked: true,
+            custom: 1
+        })
+    ]
 )
-
-console.log(elementVNode)
 
 render(elementVNode, document.getElementById('app'))
