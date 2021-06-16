@@ -2,4 +2,4 @@
 dist
 .cache
 js
-./.parcel-cache
+.parcel-cache
