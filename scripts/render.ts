@@ -71,7 +71,28 @@ function mountElement(vnode: VNode<any>, container: Element, isSVG: boolean): vo
     container.appendChild(el);
 }
 
-function mountComponent(vnode: VNode<any>, container: Element) {
+
+function mountStatefulComponent(vnode: VNode<any>, container: Element, isSVG: boolean): void {
+    // 创建组件实例
+    const instance = new (vnode.tag as any)()
+    // 渲染VNode
+    instance.$vnode = instance.render()
+    // 挂载
+    mount(instance.$vnode, container, isSVG)
+    // el 属性值 和 组件实例的 $el 属性都引用组件的根DOM元素
+    instance.$el = vnode.el = instance.$vnode.el
+}
+
+function mountFunctionalComponent(vnode: VNode<any>, container: Element, isSVG: boolean): void {
+
+}
+
+function mountComponent(vnode: VNode<any>, container: Element, isSVG: boolean): void {
+    if ((vnode.flags as number) & VNodeFlags.COMPONENT_STATEFUL) {
+        mountStatefulComponent(vnode, container, isSVG)
+    } else {
+        mountFunctionalComponent(vnode, container, isSVG)
+    }
 }
 
 function mountText(vnode: VNode<any>, container: Element) {
