@@ -1,4 +1,4 @@
-import {h} from "./h";
+import {h} from "../core/h";
 
 export default function MyFunctionalComponent() {
     // 返回要渲染的内容描述，即 VNode
