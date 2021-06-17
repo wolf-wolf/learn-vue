@@ -1,7 +1,6 @@
 import {ChildrenFlags, VNode, VNodeFlags} from "./VNode";
-import {createTextVNode, normalizeClass} from "./utils";
-
-const domPropsRE = /\[A-Z]|^(?:value|checked|selected|muted)$/
+import {createTextVNode, domPropsRE, normalizeClass} from "./utils";
+import {patch} from "./patch";
 
 function mountElement(vnode: VNode<any>, container: Element, isSVG: boolean): void {
     isSVG = isSVG || !!((vnode.flags as number) & VNodeFlags.ELEMENT_SVG);
@@ -161,7 +160,7 @@ function mountPortal(vnode: VNode<any>, container: Element) {
     vnode.el = placeholder.el
 }
 
-function mount(vnode: VNode<any>, container: Element, isSVG: boolean = false): void {
+export function mount(vnode: VNode<any>, container: Element, isSVG: boolean = false): void {
     const flags = vnode.flags as number;
 
     if (flags & VNodeFlags.ELEMENT) {
@@ -180,10 +179,6 @@ function mount(vnode: VNode<any>, container: Element, isSVG: boolean = false): v
         // 挂载 Portal
         mountPortal(vnode, container)
     }
-}
-
-function patch(prevVNode: VNode<any>, vnode: VNode<any>, container: any) {
-
 }
 
 export function render(vnode: VNode<any>, container: any) {

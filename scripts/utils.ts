@@ -50,3 +50,5 @@ export function normalizeClass(classValue: any) {
     }
     return res.trim()
 }
+
+export const domPropsRE = /\[A-Z]|^(?:value|checked|selected|muted)$/;
