@@ -1,6 +1,5 @@
 import {ChildrenFlags, Fragment, Portal, VNode, VNodeFlags} from "./VNode";
-import {normalizeVNodes, createTextVNode} from "./utils";
-
+import {createTextVNode, normalizeVNodes} from "./utils";
 
 export function h(tag: any, data: any = null, children: any = null): VNode<any> {
     let flags = null
@@ -59,7 +58,9 @@ export function h(tag: any, data: any = null, children: any = null): VNode<any> 
         data,
         flags,
         tag,
-        el: null
+        el: null,
+        render: () => {
+        }
     }
 }
 

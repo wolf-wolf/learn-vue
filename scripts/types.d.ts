@@ -1,1 +1,0 @@
-type VNodeDataDefaultType =  EventListenerOrEventListenerObject | string;

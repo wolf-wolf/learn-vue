@@ -11,9 +11,12 @@ export function createTextVNode(text: String): VNode<any> {
         children: text,
         // 文本节点没有子节点
         childFlags: ChildrenFlags.NO_CHILDREN,
-        el: null
+        el: null,
+        render: () => {
+        }
     }
 }
+
 export function normalizeVNodes(children: any) {
     const newChildren = []
     // 遍历 children
