@@ -1,4 +1,4 @@
-import {h} from "./h";
+import {h} from "../core/h";
 
 export default class MyComponent {
     render() {

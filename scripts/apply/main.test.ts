@@ -1,6 +1,6 @@
-import {h} from './h'
-import {Fragment, Portal} from "./VNode";
-import {render} from "./render";
+import {h} from '../core/h'
+import {Fragment, Portal} from "../core/VNode";
+import {render} from "../core/render";
 import MyComponent from "./funcComp.test";
 import MyFunctionalComponent from "./classComp.test";
 
