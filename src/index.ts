@@ -4,6 +4,7 @@ import {render} from "./core/render";
 import MyComponent from "./apply/funcComp.test";
 import MyFunctionalComponent from "./apply/classComp.test";
 import PropsTest from "./apply/props.test";
+import funcUpdateTest from "./apply/func.update.test.js";
 
 function testEleRender() {
     function handler() {
@@ -209,5 +210,6 @@ function testPatchDataSvsN() {
     }, 2000)
 }
 
-PropsTest()
+// PropsTest();
 // PropsSelfTest();
+funcUpdateTest()

@@ -45,10 +45,11 @@ interface VNodeData<K> {
 export interface VNode<K> {
     _isVNode: true,
     flags: FlagType,
-    tag: String | VNode<K> | null | keyof HTMLElementTagNameMap,
+    tag: String | VNode<K> | null | keyof HTMLElementTagNameMap | Function,
     data: VNodeData<K> | null,
     children: any,
     childFlags: number,
+    handle: any,
     el: any,
     render: Function
 }

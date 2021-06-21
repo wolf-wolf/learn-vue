@@ -66,6 +66,17 @@ function patchComponent(prevVNode: VNode<any>, nextVNode: VNode<any>, container:
         instance.$props = nextVNode.data
         // 3、更新组件
         instance._update()
+    } else {
+        // 更新函数式组件
+        // 通过 prevVNode.handle 拿到 handle 对象
+        const handle = (nextVNode.handle = prevVNode.handle)
+        // 更新 handle 对象
+        handle.prev = prevVNode
+        handle.next = nextVNode
+        handle.container = container
+
+        // 调用 update 函数完成更新
+        handle.update()
     }
 }
 
