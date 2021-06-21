@@ -49,7 +49,7 @@ export interface VNode<K> {
     data: VNodeData<K> | null,
     children: any,
     childFlags: number,
-    handle: any,
+    handle?: any,
     el: any,
     render: Function
 }
