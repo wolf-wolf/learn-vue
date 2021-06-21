@@ -1,10 +1,16 @@
 import {ChildrenFlags, VNode, VNodeFlags} from "./VNode";
-import {mount} from "./render";
+import {mount} from "./mount";
 import {patchChildren, patchData} from "./patchData";
 
 function replaceVNode(prevVNode: VNode<any>, nextVNode: VNode<any>, container: Element) {
     // 将旧的 VNode 所渲染的 DOM 从容器中移除
     container.removeChild(prevVNode.el)
+    // 如果将要被移除的 VNode 类型是组件，则需要调用该组件实例的 unmounted 钩子函数
+    if ((prevVNode.flags as number) & VNodeFlags.COMPONENT_STATEFUL_NORMAL) {
+        // 类型为有状态组件的 VNode，其 children 属性被用来存储组件实例对象
+        const instance = prevVNode.children
+        instance.unmounted && instance.unmounted()
+    }
     // 再把新的 VNode 挂载到容器中
     mount(nextVNode, container)
 }
@@ -50,6 +56,17 @@ function patchElement(prevVNode: VNode<any>, nextVNode: VNode<any>, container: E
 }
 
 function patchComponent(prevVNode: VNode<any>, nextVNode: VNode<any>, container: Element) {
+    // tag 属性的值是组件类，通过比较新旧组件类是否相等来判断是否是相同的组件
+    if (nextVNode.tag !== prevVNode.tag) {
+        replaceVNode(prevVNode, nextVNode, container)
+    } else if ((nextVNode.flags as number) & VNodeFlags.COMPONENT_STATEFUL_NORMAL) {   // 检查组件是否是有状态组件
+        // 1、获取组件实例
+        const instance = (nextVNode.children = prevVNode.children)
+        // 2、更新 props
+        instance.$props = nextVNode.data
+        // 3、更新组件
+        instance._update()
+    }
 }
 
 function patchText(prevVNode: VNode<any>, nextVNode: VNode<any>) {

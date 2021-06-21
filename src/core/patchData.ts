@@ -1,7 +1,7 @@
 import {domPropsRE} from "./utils";
 import {ChildrenFlags, VNodeFlags} from "./VNode";
 import {patch} from "./patch";
-import {mount} from "./render";
+import {mount} from "./mount";
 
 export function patchData(el: any, key: string, prevValue: any, nextValue: any) {
     switch (key) {

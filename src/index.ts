@@ -1,11 +1,11 @@
-import {h} from '../core/h'
-import {Fragment, Portal} from "../core/VNode";
-import {render} from "../core/render";
-import MyComponent from "./funcComp.test";
-import MyFunctionalComponent from "./classComp.test";
+import {h} from './core/h'
+import {Fragment, Portal} from "./core/VNode";
+import {render} from "./core/render";
+import MyComponent from "./apply/funcComp.test";
+import MyFunctionalComponent from "./apply/classComp.test";
+import PropsTest from "./apply/props.test";
 
 function testEleRender() {
-
     function handler() {
         alert('click me')
     }
@@ -209,4 +209,5 @@ function testPatchDataSvsN() {
     }, 2000)
 }
 
-testPatchDataSvsM()
+PropsTest()
+// PropsSelfTest();

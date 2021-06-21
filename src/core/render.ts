@@ -1,5 +1,4 @@
-import {ChildrenFlags, VNode, VNodeFlags} from "./VNode";
-import {createTextVNode, domPropsRE, normalizeClass} from "./utils";
+import {VNode} from "./VNode";
 import {patch} from "./patch";
 import {mount} from "./mount";
 

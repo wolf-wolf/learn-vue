@@ -3,3 +3,4 @@ dist
 .cache
 js
 .parcel-cache
+node_modules

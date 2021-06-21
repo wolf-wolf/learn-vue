@@ -84,7 +84,12 @@ function mountElement(vnode: VNode<any>, container: Element, isSVG: boolean): vo
  */
 function mountStatefulComponent(vnode: VNode<any>, container: Element, isSVG: boolean): void {
     // 创建组件实例
-    const instance = new (vnode.tag as any)()
+    const instance = (vnode.children = new (vnode.tag as any)())
+
+    // 初始化 props
+    instance.$props = vnode.data
+
+    console.log('instance', instance)
 
     instance._update = function() {
         // 如果 instance._mounted 为真，说明组件已挂载，应该执行更新操作
