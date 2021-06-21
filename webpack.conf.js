@@ -1,10 +1,13 @@
+import * as Webpack from 'webpack';
+
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
     mode: 'development',
     entry: {
-        index: {import: path.resolve(__dirname, './src/index.ts')},
+        index: { import: path.resolve(__dirname, './src/index.ts') },
     },
     module: {
         rules: [
@@ -22,14 +25,15 @@ module.exports = {
         contentBase: './dist',
         hot: true
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: 'Development',
-        }),
-    ],
     output: {
-        filename: '[name].bundle.js',
+        filename: 'bundle.[hash].js', // <- ensure unique bundle name
         path: path.resolve(__dirname, 'dist'),
-        clean: true,
     },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "./src/templates/index.html")
+        }),
+        new Webpack.HotModuleReplacementPlugin(),
+    ],
 };
